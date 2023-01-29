@@ -2,48 +2,50 @@ package main
 
 import (
 	"fmt"
-	"time"
 
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
+	kafka "booking-service/kafkaSetup/v1"
 )
 
-func GetDbClient() (*gorm.DB, error) {
-	dsn := "postgres://byxbjyos:URvuR_vyb6iDTl-IHVNRAIiQjgjvnThX@arjuna.db.elephantsql.com/byxbjyos"
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-	if err != nil {
-		return db, err
-	}
-	return db, err
-}
+// func testDbConnection() {
+// 	dbClient, err := db.GetDbClient()
+// 	if err != nil {
+// 		fmt.Println("error occured while initializing db")
+// 		panic(err)
+// 	}
+// 	fmt.Println(dbClient)
+// 	fmt.Println("test database table creation....")
+// 	db.CheckTableCreation(dbClient)
+// }
 
-type TUser struct {
-	*gorm.Model
-	Name     string
-	Age      int
-	Birthday time.Time
-}
-
-func checkTableCreation(db *gorm.DB) {
-	db.AutoMigrate(&TUser{})
-	tUser := TUser{Name: "Jinzhu", Age: 18, Birthday: time.Now()}
-	result := db.Create(&tUser)
-	if result.Error != nil {
-		panic(result.Error)
-	}
-	fmt.Println(tUser.ID)
-	fmt.Println(result.Error)
-	fmt.Println(result.RowsAffected)
+func testKafkaConnection() {
+	kafka.WriteMessageOnTopic()
 }
 
 func main() {
 	fmt.Println("App started...!")
-	dbClient, err := GetDbClient()
-	if err != nil {
-		fmt.Println("error occured while initializing db")
-		panic(err)
-	}
-	fmt.Println(dbClient)
-	fmt.Println("test database table creation....")
-	checkTableCreation(dbClient)
+	// testDbConnection()
+	testKafkaConnection()
+	fmt.Println("closing application")
 }
+
+// package main
+
+// import (
+// 	"fmt"
+// 	"net"
+// 	"time"
+// )
+
+// func main() {
+// 	// host := "google.com"
+// 	timeout := 2 * time.Second
+// 	const KAFKA_BROKER_URL = "pkc-ymrq7.us-east-2.aws.confluent.cloud:9092"
+
+// 	_, err := net.DialTimeout("tcp", KAFKA_BROKER_URL, timeout)
+// 	if err != nil {
+// 		fmt.Println("Server is unavailable")
+// 		return
+// 	}
+
+// 	fmt.Println("Server is available")
+// }
