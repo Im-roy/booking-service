@@ -18,6 +18,10 @@ import (
 // }
 
 func testKafkaConnection() {
+	ok := kafka.CheckKafkaConnection()
+	if ok {
+		fmt.Println("kafka connection is available")
+	}
 	kafka.WriteMessageOnTopic()
 }
 
